@@ -1,0 +1,7 @@
+pandas == 2.0.0
+
+nltk == 3.8.1
+
+emoji == 2.2.0
+
+matplotlib == 3.7.1
