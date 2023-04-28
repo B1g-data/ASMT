@@ -15,23 +15,8 @@ class color:
     UNDERLINE = '\033[4m'
     END = '\033[0m'
 
-# Загрузка данных из файла JSON в DataFrame
-data = pd.read_json('result.json', encoding='utf-8')
 
-# Преобразование вложенных объектов JSON в отдельные столбцы
-df = pd.json_normalize(data['messages'])
-
-message_all = 0
-phone_call_all = 0
-voice_all = 0
-video_mess_all = 0
-photo_all = 0
-video_all = 0
-sticker_all = 0
-text_all = 0
-users = df['from'].dropna().unique()
-
-#статистика по юзерам
+# статистика по юзерам
 def user_statistic(user):
     global message_all, phone_call_all, voice_all, video_mess_all, photo_all, video_all, sticker_all, text_all
 
@@ -79,7 +64,7 @@ def user_statistic(user):
 {emoji.emojize(':clapper_board:')} Видео: {video}\n\
 {emoji.emojize(':performing_arts:')} Стикеров: {sticker}\n"
 
-#общая статистика
+# общая статистика
 def statistic_all():
     global text_all
     text_all = message_all - voice_all - video_mess_all - \
@@ -98,7 +83,7 @@ def statistic_all():
 {emoji.emojize(':pencil:')}  Всего текстовых сообщений: {text_all}\n\
 {emoji.emojize(':balance_scale:')}  Средняя длина текстового сообщения: {round(mean_lengths)}"
 
-#гистограмма распределения сообщений по месяцам
+# гистограмма распределения сообщений по месяцам
 def bar_chart():
     global df
     # выделить месяцы сообщений
@@ -130,7 +115,7 @@ def bar_chart():
     print(emoji.emojize(':TOP_arrow:'), 'В самый активный месяц', most_active_month.name,
           'было отправлено', month_counts['count'].max(), 'соообщения')
 
-#круговая диаграмма по количеству сообщений от юзеров
+# круговая диаграмма по количеству сообщений от юзеров
 def pie_chart(bebra):
     sizes = []
     labels = []
@@ -150,7 +135,7 @@ def pie_chart(bebra):
     # экспортирование графика в файл png
     plt.savefig('image/my_pie_chart.png', dpi=300, bbox_inches='tight')
 
-#круговая диаграмма соотношений по виду сообщений#
+# круговая диаграмма соотношений по виду сообщений
 def pie_chart_mess():
     global message_all, phone_call_all, voice_all, video_mess_all, photo_all, video_all, sticker_all, text_all
     sizes = [sticker_all, video_all, photo_all,
@@ -192,9 +177,26 @@ def word_frequency():
               for i in tokens if i not in russian_stop_words and len(i) >= 4]
     mySeries = pd.Series(tokens)
 
-    return(mySeries.value_counts())
+    return (mySeries.value_counts())
+
 
 if __name__ == "__main__":
+
+    # Загрузка данных из файла JSON в DataFrame
+    data = pd.read_json('result.json', encoding='utf-8')
+
+    # Преобразование вложенных объектов JSON в отдельные столбцы
+    df = pd.json_normalize(data['messages'])
+
+    message_all = 0
+    phone_call_all = 0
+    voice_all = 0
+    video_mess_all = 0
+    photo_all = 0
+    video_all = 0
+    sticker_all = 0
+    text_all = 0
+
     # Определение уникальных пользователей и подсчет количества сообщений от каждого пользователя
     bebra = {}  # Создаем пустой словарь для хранения количества сообщений каждого пользователя
     for user in df['from'].dropna().unique():
@@ -207,7 +209,7 @@ if __name__ == "__main__":
     pie_chart(bebra)
 
     pie_chart_mess()
-    
+
     print(word_frequency())
 
     print('Готово')

@@ -5,3 +5,5 @@ nltk == 3.8.1
 emoji == 2.2.0
 
 matplotlib == 3.7.1
+
+telebot == 4.11.0
