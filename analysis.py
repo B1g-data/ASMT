@@ -81,6 +81,7 @@ def user_statistic(user):
 
 #общая статистика
 def statistic_all():
+    global text_all
     text_all = message_all - voice_all - video_mess_all - \
         photo_all - video_all - sticker_all
     df_lengths = df['text'].map(len)
@@ -97,7 +98,7 @@ def statistic_all():
 {emoji.emojize(':pencil:')}  Всего текстовых сообщений: {text_all}\n\
 {emoji.emojize(':balance_scale:')}  Средняя длина текстового сообщения: {round(mean_lengths)}"
 
-#круговая диаграмма по количеству сообщений от юзеров
+#гистограмма распределения сообщений по месяцам
 def bar_chart():
     global df
     # выделить месяцы сообщений
@@ -129,7 +130,7 @@ def bar_chart():
     print(emoji.emojize(':TOP_arrow:'), 'В самый активный месяц', most_active_month.name,
           'было отправлено', month_counts['count'].max(), 'соообщения')
 
-#круговая диаграмма соотношений по виду сообщений
+#круговая диаграмма по количеству сообщений от юзеров
 def pie_chart(bebra):
     sizes = []
     labels = []
@@ -149,7 +150,7 @@ def pie_chart(bebra):
     # экспортирование графика в файл png
     plt.savefig('image/my_pie_chart.png', dpi=300, bbox_inches='tight')
 
-#гистограмма распределения сообщений по месяцам
+#круговая диаграмма соотношений по виду сообщений#
 def pie_chart_mess():
     global message_all, phone_call_all, voice_all, video_mess_all, photo_all, video_all, sticker_all, text_all
     sizes = [sticker_all, video_all, photo_all,
