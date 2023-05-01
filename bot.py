@@ -14,7 +14,7 @@ def pr(chat_id):
 
 def parse_imgs():
     imgs = []
-    path = os.path.dirname(os.path.abspath(__file__))+'\\pics'
+    path = os.path.dirname(os.path.abspath(__file__))+'\\json file download'
     for img in os.listdir(path):
         imgs.append(telebot.types.InputMediaPhoto(open(path+f'\\{img}', 'rb')))
     return(imgs)
