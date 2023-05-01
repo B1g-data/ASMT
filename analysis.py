@@ -81,9 +81,9 @@ def statistic_all():
 {emoji.emojize(':clapper_board:')} Всего видео: {video_all}\n\
 {emoji.emojize(':performing_arts:')} Всего стикеров: {sticker_all}\n\
 {emoji.emojize(':pencil:')}  Всего текстовых сообщений: {text_all}\n\
-{emoji.emojize(':balance_scale:')}  Средняя длина текстового сообщения: {round(mean_lengths)}"
+{emoji.emojize(':balance_scale:')}  Средняя длина текстового сообщения: {round(mean_lengths)}\n"
 
-# гистограмма распределения сообщений по месяцам
+# гистограмма распределения сообщений по месяцам и топ 1 месяц по сообщениям
 def bar_chart():
     global df
     # выделить месяцы сообщений
@@ -112,8 +112,10 @@ def bar_chart():
     ax.set_xticklabels(month_counts.index, rotation=70)
     plt.savefig('image/my_bar_chart.png', dpi=300, bbox_inches='tight')
     most_active_month = month_counts.loc[month_counts['count'].idxmax()]
-    print(emoji.emojize(':TOP_arrow:'), 'В самый активный месяц', most_active_month.name,
-          'было отправлено', month_counts['count'].max(), 'соообщения')
+
+    #топ 1 месяц
+    return f"{emoji.emojize(':TOP_arrow:')} В самый активный месяц {most_active_month.name} \
+было отправлено {month_counts['count'].max()} сообщения \n"
 
 # круговая диаграмма по количеству сообщений от юзеров
 def pie_chart(bebra):
@@ -155,7 +157,7 @@ def pie_chart_mess():
     plt.title('Отношение каждого вида сообщений')
 
     # экспортирование графика в файл png
-    plt.savefig('image/my_pie_chart_2.png', dpi=500, bbox_inches='tight')
+    plt.savefig('image/my_pie_chart_mess.png', dpi=500, bbox_inches='tight')
 
 # частота встречаимости слов в сообщениях
 def word_frequency():
@@ -177,7 +179,7 @@ def word_frequency():
               for i in tokens if i not in russian_stop_words and len(i) >= 4]
     mySeries = pd.Series(tokens)
 
-    return (mySeries.value_counts())
+    return (mySeries.value_counts().head(5))
 
 
 if __name__ == "__main__":
@@ -205,6 +207,8 @@ if __name__ == "__main__":
     print(statistic_all())
 
     bar_chart()
+
+    print(bar_chart())
 
     pie_chart(bebra)
 
